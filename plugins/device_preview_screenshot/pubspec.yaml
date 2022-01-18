@@ -12,7 +12,7 @@ dependencies:
   device_preview:
     git:
       url: https://github.com/michaelhitzker/flutter_device_preview.git
-      path: plugins/device_preview_screenshot
+      path: device_preview
   flutter:
     sdk: flutter
   path: ^1.8.0
