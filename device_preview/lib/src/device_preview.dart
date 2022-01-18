@@ -114,24 +114,24 @@ class DevicePreview extends StatefulWidget {
 
   /// The currently selected device.
   static DeviceInfo selectedDevice(BuildContext context) {
-    return context.select(
-      (DevicePreviewStore store) => store.deviceInfo,
-    );
+    return Provider.of<DevicePreviewStore>(context, listen: false).deviceInfo;
   }
 
   /// The simulated target platform for the currently selected device.
   static TargetPlatform platform(BuildContext context) {
-    final platform = context.select(
-      (DevicePreviewStore store) => store.deviceInfo.identifier.platform,
-    );
+    final platform = Provider.of<DevicePreviewStore>(context, listen: false)
+        .deviceInfo
+        .identifier
+        .platform;
     return platform;
   }
 
   /// The simulated visual density for the currently selected device.
   static VisualDensity visualDensity(BuildContext context) {
-    final deviceType = context.select(
-      (DevicePreviewStore store) => store.deviceInfo.identifier.type,
-    );
+    final deviceType = Provider.of<DevicePreviewStore>(context, listen: false)
+        .deviceInfo
+        .identifier
+        .type;
     if (deviceType == DeviceType.desktop || deviceType == DeviceType.laptop) {
       return VisualDensity.compact;
     }
@@ -146,12 +146,11 @@ class DevicePreview extends StatefulWidget {
     }
 
     final theme = Theme.of(context);
-    final isInitializedAndEnabled = context.select(
-      (DevicePreviewStore store) => store.state.maybeMap(
-        initialized: (initialized) => initialized.data.isEnabled,
-        orElse: () => false,
-      ),
-    );
+    final isInitializedAndEnabled =
+        Provider.of<DevicePreviewStore>(context, listen: false).state.maybeMap(
+              initialized: (initialized) => initialized.data.isEnabled,
+              orElse: () => false,
+            );
 
     if (!isInitializedAndEnabled) {
       return child!;
@@ -169,12 +168,12 @@ class DevicePreview extends StatefulWidget {
   /// Indicates whether the device preview is currently enabled.
   static bool isEnabled(BuildContext context) {
     if (_isEnabled(context)) {
-      return context.select(
-        (DevicePreviewStore store) => store.state.maybeMap(
-          initialized: (initialized) => initialized.data.isEnabled,
-          orElse: () => false,
-        ),
-      );
+      return Provider.of<DevicePreviewStore>(context, listen: false)
+          .state
+          .maybeMap(
+            initialized: (initialized) => initialized.data.isEnabled,
+            orElse: () => false,
+          );
     }
     return false;
   }
@@ -284,41 +283,41 @@ class DevicePreview extends StatefulWidget {
   }
 
   static MediaQueryData _mediaQuery(BuildContext context) {
-    final device = context.select(
-      (DevicePreviewStore store) => store.deviceInfo,
-    );
+    final device =
+        Provider.of<DevicePreviewStore>(context, listen: false).deviceInfo;
+    final orientation = Provider.of<DevicePreviewStore>(context, listen: false)
+        .data
+        .orientation;
 
-    final orientation = context.select(
-      (DevicePreviewStore store) => store.data.orientation,
-    );
+    final isVirtualKeyboardVisible =
+        Provider.of<DevicePreviewStore>(context, listen: false)
+            .data
+            .isVirtualKeyboardVisible;
 
-    final isVirtualKeyboardVisible = context.select(
-      (DevicePreviewStore store) => store.data.isVirtualKeyboardVisible,
-    );
+    final isDarkMode =
+        Provider.of<DevicePreviewStore>(context, listen: false).data.isDarkMode;
 
-    final isDarkMode = context.select(
-      (DevicePreviewStore store) => store.data.isDarkMode,
-    );
+    final textScaleFactor =
+        Provider.of<DevicePreviewStore>(context, listen: false)
+            .data
+            .textScaleFactor;
 
-    final textScaleFactor = context.select(
-      (DevicePreviewStore store) => store.data.textScaleFactor,
-    );
+    final boldText =
+        Provider.of<DevicePreviewStore>(context, listen: false).data.boldText;
 
-    final boldText = context.select(
-      (DevicePreviewStore store) => store.data.boldText,
-    );
+    final disableAnimations =
+        Provider.of<DevicePreviewStore>(context, listen: false)
+            .data
+            .disableAnimations;
 
-    final disableAnimations = context.select(
-      (DevicePreviewStore store) => store.data.disableAnimations,
-    );
+    final accessibleNavigation =
+        Provider.of<DevicePreviewStore>(context, listen: false)
+            .data
+            .accessibleNavigation;
 
-    final accessibleNavigation = context.select(
-      (DevicePreviewStore store) => store.data.accessibleNavigation,
-    );
-
-    final invertColors = context.select(
-      (DevicePreviewStore store) => store.data.invertColors,
-    );
+    final invertColors = Provider.of<DevicePreviewStore>(context, listen: false)
+        .data
+        .invertColors;
 
     var mediaQuery = DeviceFrame.mediaQuery(
       context: context,
@@ -391,31 +390,33 @@ class _DevicePreviewState extends State<DevicePreview> {
 
   Widget _buildPreview(BuildContext context) {
     final theme = Theme.of(context);
-    final isEnabled = context.select(
-      (DevicePreviewStore store) => store.state.maybeMap(
-        initialized: (state) => state.data.isEnabled,
-        orElse: () => false,
-      ),
-    );
+    final isEnabled =
+        Provider.of<DevicePreviewStore>(context, listen: false).state.maybeMap(
+              initialized: (state) => state.data.isEnabled,
+              orElse: () => false,
+            );
 
     if (!isEnabled) return widget.builder(context);
 
     final mediaQuery = MediaQuery.of(context);
-    final device = context.select(
-      (DevicePreviewStore store) => store.deviceInfo,
-    );
-    final isFrameVisible = context.select(
-      (DevicePreviewStore store) => store.data.isFrameVisible,
-    );
-    final orientation = context.select(
-      (DevicePreviewStore store) => store.data.orientation,
-    );
-    final isVirtualKeyboardVisible = context.select(
-      (DevicePreviewStore store) => store.data.isVirtualKeyboardVisible,
-    );
-    final isDarkMode = context.select(
-      (DevicePreviewStore store) => store.data.isDarkMode,
-    );
+    final device =
+        Provider.of<DevicePreviewStore>(context, listen: false).deviceInfo;
+    final isFrameVisible =
+        Provider.of<DevicePreviewStore>(context, listen: false)
+            .data
+            .isFrameVisible;
+
+    final orientation = Provider.of<DevicePreviewStore>(context, listen: false)
+        .data
+        .orientation;
+
+    final isVirtualKeyboardVisible =
+        Provider.of<DevicePreviewStore>(context, listen: false)
+            .data
+            .isVirtualKeyboardVisible;
+
+    final isDarkMode =
+        Provider.of<DevicePreviewStore>(context, listen: false).data.isDarkMode;
 
     return Container(
       color: theme.canvasColor,
@@ -479,12 +480,13 @@ class _DevicePreviewState extends State<DevicePreview> {
         storage: storage,
       ),
       builder: (context, child) {
-        final isInitialized = context.select(
-          (DevicePreviewStore store) => store.state.maybeMap(
-            initialized: (_) => true,
-            orElse: () => false,
-          ),
-        );
+        final isInitialized =
+            Provider.of<DevicePreviewStore>(context, listen: false)
+                .state
+                .maybeMap(
+                  initialized: (_) => true,
+                  orElse: () => false,
+                );
 
         if (!isInitialized) {
           return Builder(
@@ -493,22 +495,25 @@ class _DevicePreviewState extends State<DevicePreview> {
           );
         }
 
-        final isEnabled = context.select(
-          (DevicePreviewStore store) => store.data.isEnabled,
-        );
+        final isEnabled =
+            Provider.of<DevicePreviewStore>(context, listen: false)
+                .data
+                .isEnabled;
 
-        final toolbarTheme = context.select(
-          (DevicePreviewStore store) => store.settings.toolbarTheme,
-        );
+        final toolbarTheme =
+            Provider.of<DevicePreviewStore>(context, listen: false)
+                .settings
+                .toolbarTheme;
 
-        final backgroundTheme = context.select(
-          (DevicePreviewStore store) => store.settings.backgroundTheme,
-        );
+        final backgroundTheme =
+            Provider.of<DevicePreviewStore>(context, listen: false)
+                .settings
+                .backgroundTheme;
 
         final isToolbarVisible = widget.isToolbarVisible &&
-            context.select(
-              (DevicePreviewStore store) => store.data.isToolbarVisible,
-            );
+            Provider.of<DevicePreviewStore>(context, listen: false)
+                .data
+                .isToolbarVisible;
 
         final toolbar = toolbarTheme.asThemeData();
         final background = backgroundTheme.asThemeData();
@@ -529,14 +534,22 @@ class _DevicePreviewState extends State<DevicePreview> {
 
                     final borderRadius = isToolbarVisible
                         ? BorderRadius.only(
-                            topRight: isSmall ? Radius.zero : const Radius.circular(16),
+                            topRight: isSmall
+                                ? Radius.zero
+                                : const Radius.circular(16),
                             bottomRight: const Radius.circular(16),
-                            bottomLeft: isSmall ? const Radius.circular(16) : Radius.zero,
+                            bottomLeft: isSmall
+                                ? const Radius.circular(16)
+                                : Radius.zero,
                           )
                         : BorderRadius.zero;
-                    final double rightPanelOffset =
-                        !isSmall ? (isEnabled ? ToolPanel.panelWidth - 10 : (64 + mediaQuery.padding.right)) : 0;
-                    final double bottomPanelOffset = isSmall ? mediaQuery.padding.bottom + 52 : 0;
+                    final double rightPanelOffset = !isSmall
+                        ? (isEnabled
+                            ? ToolPanel.panelWidth - 10
+                            : (64 + mediaQuery.padding.right))
+                        : 0;
+                    final double bottomPanelOffset =
+                        isSmall ? mediaQuery.padding.bottom + 52 : 0;
                     return Stack(
                       children: <Widget>[
                         if (isToolbarVisible && isSmall)
