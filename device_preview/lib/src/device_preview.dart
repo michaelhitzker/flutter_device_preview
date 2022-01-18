@@ -481,7 +481,7 @@ class _DevicePreviewState extends State<DevicePreview> {
       ),
       builder: (context, child) {
         final isInitialized =
-            Provider.of<DevicePreviewStore>(context, listen: false)
+            Provider.of<DevicePreviewStore>(context, listen: true)
                 .state
                 .maybeMap(
                   initialized: (_) => true,
