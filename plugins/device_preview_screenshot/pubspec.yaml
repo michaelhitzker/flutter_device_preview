@@ -2,13 +2,15 @@ name: device_preview_screenshot
 version: 1.0.0
 description: A plugin for device_preview that allows to take screenshots.
 homepage: https://github.com/aloisdeniel/flutter_device_preview/plugins/device_preview_screenshot
+publish_to: none
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
-  device_preview: ^1.0.0
+  device_preview:
+    path: ../../device_preview
   flutter:
     sdk: flutter
   path: ^1.8.0
